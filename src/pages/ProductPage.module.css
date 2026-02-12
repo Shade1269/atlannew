@@ -1,0 +1,245 @@
+/* ProductPage layout and structure — ألوان الثيم تُطبّق عبر inline أو الـ theme */
+
+.loadingContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.page {
+  min-height: 100vh;
+  padding-top: 1.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.navLink {
+  font-weight: 500;
+}
+
+.navLink:hover {
+  text-decoration: underline;
+}
+
+.imageGallery {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.imageLarge {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border, #e5e7eb);
+  background: var(--secondary, #f3f4f6);
+}
+
+.imageButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  color: inherit;
+  border: none;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+.imageButton:hover {
+  opacity: 1;
+}
+
+.imageButtonPrev {
+  left: 0.5rem;
+}
+
+.imageButtonNext {
+  right: 0.5rem;
+}
+
+.imageThumbnails {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.imageThumbnail {
+  flex-shrink: 0;
+  width: 4rem;
+  height: 5rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  padding: 0;
+  background: var(--secondary, #f3f4f6);
+}
+
+.imageThumbnailActive {
+  border-color: hsl(var(--primary));
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.productHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.category {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.priceContainer {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.originalPrice {
+  font-size: 1rem;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.descriptionBox {
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border, #e5e7eb);
+  background: var(--secondary);
+}
+
+.descriptionTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.descriptionText {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.variantSection {
+  padding-top: 1rem;
+  border-top: 1px solid var(--border, #e5e7eb);
+}
+
+.variantTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.variantEmpty {
+  font-size: 0.875rem;
+}
+
+.quantitySection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.quantityLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quantityInput {
+  min-width: 2.5rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.actionButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.addToCartButton {
+  flex: 1;
+  min-width: 10rem;
+}
+
+.iconButton {
+  flex-shrink: 0;
+}
+
+.stockInfo {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
