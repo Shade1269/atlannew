@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting - Strict Mode (Gradual Adoption) */
+    /* Phase 1: Safe options enabled immediately */
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "exactOptionalPropertyTypes": false,
+
+    /* Phase 2: Enable these after fixing existing errors */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    /* Note: strict:true enables these automatically:
+     * - noImplicitAny
+     * - strictNullChecks
+     * - strictFunctionTypes
+     * - strictBindCallApply
+     * - strictPropertyInitialization
+     * - noImplicitThis
+     * - alwaysStrict
+     */
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"]
+}

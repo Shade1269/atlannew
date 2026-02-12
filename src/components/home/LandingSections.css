@@ -1,0 +1,64 @@
+/* CSS animations to replace framer-motion for better performance */
+
+/* Fade in and slide up animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.landing-fade-in {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.landing-fade-in-scale {
+  opacity: 0;
+  animation: fadeInScale 0.5s ease-out forwards;
+}
+
+/* Staggered delays */
+.landing-delay-1 { animation-delay: 0.1s; }
+.landing-delay-2 { animation-delay: 0.2s; }
+.landing-delay-3 { animation-delay: 0.3s; }
+.landing-delay-4 { animation-delay: 0.4s; }
+.landing-delay-5 { animation-delay: 0.5s; }
+.landing-delay-6 { animation-delay: 0.6s; }
+
+/* Hover lift effect */
+.landing-hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.landing-hover-lift:hover {
+  transform: translateY(-8px);
+}
+
+.landing-hover-lift-sm:hover {
+  transform: translateY(-5px);
+}
+
+/* Scale on hover */
+.landing-hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.landing-hover-scale:hover {
+  transform: scale(1.1);
+}

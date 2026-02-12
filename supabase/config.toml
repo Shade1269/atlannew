@@ -1,0 +1,82 @@
+project_id = "uewuiiopkctdtaexmtxu"
+
+[functions.ai-image-editor]
+verify_jwt = false
+
+[functions.ai-video-generator]
+verify_jwt = false
+
+[functions.ai-chat]
+verify_jwt = false
+
+[functions.chat-assistant]
+verify_jwt = false
+
+[functions.ai-content-generator]
+verify_jwt = false
+
+[functions.ai-image-generator]
+verify_jwt = false
+
+[functions.ai-analytics]
+verify_jwt = false
+
+[functions.zoho-callback]
+verify_jwt = false
+
+[functions.send-customer-otp]
+verify_jwt = false
+
+[functions.verify-customer-otp]
+verify_jwt = false
+
+[functions.create-geidea-session]
+verify_jwt = false
+
+[functions.geidea-webhook]
+verify_jwt = false
+
+[functions.send-platform-otp]
+verify_jwt = false
+
+[functions.verify-platform-otp]
+verify_jwt = false
+
+[functions.process-geidea-callback]
+verify_jwt = false
+
+[functions.livekit-token]
+verify_jwt = false
+
+[functions.send-order-to-zoho-flow]
+verify_jwt = false
+
+[functions.update-order-invoice]
+verify_jwt = false
+
+[functions.ai-context-helper]
+verify_jwt = false
+
+[functions.project-health-scanner]
+verify_jwt = true
+
+[functions.project-brain]
+verify_jwt = true
+
+[functions.brain-code-reader]
+verify_jwt = true
+
+[functions.store-design-brain]
+verify_jwt = false
+
+[functions.marketer-brain]
+verify_jwt = false
+
+[functions.ai-agents]
+verify_jwt = false
+
+[functions.predictive-analytics]
+verify_jwt = false
+
+[functions.content-automation]
+verify_jwt = false

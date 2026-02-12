@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>وضع غير متصل - منصة أتلانتس</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg-soft: rgba(13, 17, 23, 0.82);
+      --accent: #57a5ff;
+      --accent-soft: rgba(87, 165, 255, 0.18);
+      --fg: #f5f9ff;
+      --muted: rgba(245, 249, 255, 0.72);
+      --border: rgba(87, 165, 255, 0.35);
+      --shadow: 0 24px 72px rgba(4, 12, 24, 0.45);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(87, 165, 255, 0.22), transparent 55%),
+        radial-gradient(circle at bottom, rgba(142, 97, 255, 0.2), transparent 45%),
+        var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    main {
+      width: min(520px, 100%);
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 36px 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      text-align: center;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    header span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 24px;
+      box-shadow: inset 0 0 0 1px rgba(87, 165, 255, 0.3);
+    }
+
+    h1 {
+      font-size: clamp(1.75rem, 2vw + 1rem, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -0.015em;
+    }
+
+    p {
+      margin: 0 auto 24px;
+      max-width: 420px;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border-radius: 999px;
+      padding: 0.85rem 1.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--fg);
+      background: linear-gradient(135deg, rgba(87, 165, 255, 0.9), rgba(87, 165, 255, 0.65));
+      border: 1px solid rgba(87, 165, 255, 0.4);
+      box-shadow: 0 18px 40px rgba(87, 165, 255, 0.22);
+      cursor: pointer;
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+
+    button:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(13, 17, 23, 0.65), 0 0 0 5px rgba(87, 165, 255, 0.65);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 48px rgba(87, 165, 255, 0.26);
+    }
+
+    ul {
+      list-style: none;
+      margin-top: 28px;
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px dashed rgba(87, 165, 255, 0.32);
+      background: rgba(13, 17, 23, 0.55);
+      color: var(--muted);
+      font-size: 0.9rem;
+      display: grid;
+      gap: 10px;
+    }
+
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #f6c356;
+      box-shadow: 0 0 0 4px rgba(246, 195, 86, 0.2);
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding: 28px 22px;
+        border-radius: 24px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      button, header span {
+        transition: none;
+      }
+      button:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <span aria-hidden>✦</span>
+      <h1>أنت غير متصل الآن</h1>
+    </header>
+    <p>
+      لا تقلق! الواجهة الزجاجية لمنصة أتلانتس ما زالت في انتظارك.
+      بمجرد استعادة الاتصال سنعيد تحميل تجربتك تلقائياً.
+    </p>
+    <button type="button" onclick="window.location.reload()" aria-label="إعادة المحاولة للتحقق من الاتصال">
+      <div class="status-indicator" aria-hidden></div>
+      <span>إعادة المحاولة</span>
+    </button>
+    <ul>
+      <li>يمكنك متابعة استعراض آخر البيانات المخزنة على جهازك.</li>
+      <li>عند عودة الاتصال سنجلب أحدث الطلبات والتحليلات فوراً.</li>
+      <li>لأفضل أداء، أبقِ التطبيق مثبتاً على شاشتك الرئيسية.</li>
+    </ul>
+  </main>
+  <script>
+    const reloadWhenOnline = () => {
+      if (navigator.onLine) {
+        window.removeEventListener('online', reloadWhenOnline);
+        setTimeout(() => window.location.reload(), 600);
+      }
+    };
+
+    window.addEventListener('online', reloadWhenOnline, { passive: true });
+  </script>
+</body>
+</html>

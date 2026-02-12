@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="anaqati" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Critical preconnects - MUST be first for early connection establishment -->
+    <link rel="preconnect" href="https://uewuiiopkctdtaexmtxu.supabase.co">
+    <link rel="preconnect" href="https://uewuiiopkctdtaexmtxu.supabase.co" crossorigin>
+    <link rel="preconnect" href="https://atlants-dc971.firebaseapp.com">
+    <link rel="preconnect" href="https://atlants-dc971.firebaseapp.com" crossorigin>
+    <link rel="preconnect" href="https://www.googleapis.com">
+    <link rel="preconnect" href="https://www.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://apis.google.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://uewuiiopkctdtaexmtxu.supabase.co">
+    <link rel="dns-prefetch" href="https://atlants-dc971.firebaseapp.com">
+    <link rel="dns-prefetch" href="https://www.googleapis.com">
+    <link rel="dns-prefetch" href="https://apis.google.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="icon" href="/lovable-uploads/0e23a745-b356-4596-95c0-39b0050acbd1.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/anaqati-icon-192.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#57a5ff" data-theme-sync="primary" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <!-- Primary Arabic font - loaded immediately -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Secondary fonts - deferred loading with media="print" trick -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    </noscript>
+    <style>
+      /* Critical CSS for above-the-fold content - prevents render blocking */
+      *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+      html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+      body{min-height:100vh;line-height:1.5}
+      :root{--background:222.2 84% 4.9%;--foreground:210 40% 98%;--primary:217.2 91.2% 59.8%;--primary-foreground:222.2 47.4% 11.2%}
+      .dark{--background:222.2 84% 4.9%;--foreground:210 40% 98%}
+      
+      /* Typography baseline for Arabic UI */
+      html, body {
+        font-family: 'Noto Sans Arabic', 'Cairo', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+        font-variant-ligatures: common-ligatures;
+        font-kerning: normal;
+        background-color: hsl(var(--background));
+        color: hsl(var(--foreground));
+      }
+      h1, h2, h3, .heading-ar {
+        font-family: 'Tajawal', 'Cairo', 'Noto Sans Arabic', system-ui, sans-serif;
+        letter-spacing: -0.02em;
+        font-weight: 800;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        font-variant-numeric: tabular-nums;
+      }
+      .subtitle-ar, .description-ar {
+        font-family: 'Amiri', 'Noto Sans Arabic', serif;
+        font-style: italic;
+        font-weight: 400;
+        line-height: 1.6;
+        font-variant-ligatures: discretionary-ligatures;
+      }
+      .premium-text {
+        font-family: 'Tajawal', 'Cairo', sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        font-variant-numeric: tabular-nums;
+      }
+      .elegant-text {
+        font-family: 'Amiri', serif;
+        font-weight: 400;
+        line-height: 1.8;
+        font-variant-ligatures: discretionary-ligatures;
+      }
+      
+      /* Admin Layout Typography */
+      [data-admin-layout] {
+        font-family: 'Tajawal', 'Cairo', 'Noto Sans Arabic', system-ui, sans-serif;
+      }
+      
+      [data-admin-layout] h1, [data-admin-layout] h2, [data-admin-layout] h3 {
+        font-family: 'Tajawal', 'Cairo', 'Noto Sans Arabic', system-ui, sans-serif;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      
+      [data-admin-layout] .admin-card {
+        font-family: 'Tajawal', 'Cairo', 'Noto Sans Arabic', system-ui, sans-serif;
+        font-weight: 500;
+      }
+      
+      [data-admin-layout] .admin-text {
+        font-family: 'Noto Sans Arabic', 'Cairo', system-ui, sans-serif;
+        font-weight: 400;
+        line-height: 1.6;
+      }
+      
+      /* Admin Layout Visual Enhancements */
+      [data-admin-layout] .admin-sidebar-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(255, 255, 255, 0.95) 0%, 
+          rgba(248, 250, 252, 0.9) 50%, 
+          rgba(241, 245, 249, 0.85) 100%);
+        backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(59, 130, 246, 0.2);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+      }
+      
+      .dark [data-admin-layout] .admin-sidebar-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(15, 23, 42, 0.95) 0%, 
+          rgba(30, 41, 59, 0.9) 50%, 
+          rgba(51, 65, 85, 0.85) 100%);
+        border-left: 1px solid rgba(59, 130, 246, 0.3);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+      }
+      
+      [data-admin-layout] .admin-nav-item {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      [data-admin-layout] .admin-nav-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+      }
+      
+      [data-admin-layout] .admin-nav-item:hover::before {
+        left: 100%;
+      }
+      
+      [data-admin-layout] .admin-header-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(255, 255, 255, 0.98) 0%, 
+          rgba(248, 250, 252, 0.95) 50%, 
+          rgba(241, 245, 249, 0.9) 100%);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+      
+      .dark [data-admin-layout] .admin-header-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(15, 23, 42, 0.98) 0%, 
+          rgba(30, 41, 59, 0.95) 50%, 
+          rgba(51, 65, 85, 0.9) 100%);
+        border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      }
+      
+      [data-admin-layout] .admin-content-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(255, 255, 255, 0.8) 0%, 
+          rgba(248, 250, 252, 0.6) 50%, 
+          rgba(241, 245, 249, 0.4) 100%);
+        backdrop-filter: blur(10px);
+      }
+      
+      .dark [data-admin-layout] .admin-content-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(15, 23, 42, 0.8) 0%, 
+          rgba(30, 41, 59, 0.6) 50%, 
+          rgba(51, 65, 85, 0.4) 100%);
+      }
+      
+      /* Admin Card Enhancements */
+      [data-admin-layout] .admin-card-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(255, 255, 255, 0.9) 0%, 
+          rgba(248, 250, 252, 0.8) 100%);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(59, 130, 246, 0.1);
+        box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      [data-admin-layout] .admin-card-enhanced:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -2px rgba(0, 0, 0, 0.1);
+        border-color: rgba(59, 130, 246, 0.2);
+      }
+      
+      .dark [data-admin-layout] .admin-card-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(15, 23, 42, 0.9) 0%, 
+          rgba(30, 41, 59, 0.8) 100%);
+        border-color: rgba(59, 130, 246, 0.2);
+        box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+      }
+      
+      .dark [data-admin-layout] .admin-card-enhanced:hover {
+        box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -2px rgba(0, 0, 0, 0.3);
+        border-color: rgba(59, 130, 246, 0.3);
+      }
+      
+      /* Merchant Layout Enhancements */
+      [data-merchant-layout] {
+        font-family: 'Tajawal', 'Cairo', 'Noto Sans Arabic', system-ui, sans-serif;
+      }
+      
+      [data-merchant-layout] .sidebar-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(255, 255, 255, 0.95) 0%, 
+          rgba(248, 250, 252, 0.9) 50%, 
+          rgba(241, 245, 249, 0.85) 100%);
+        backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(59, 130, 246, 0.2);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+      }
+      
+      .dark [data-merchant-layout] .sidebar-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(15, 23, 42, 0.95) 0%, 
+          rgba(30, 41, 59, 0.9) 50%, 
+          rgba(51, 65, 85, 0.85) 100%);
+        border-left: 1px solid rgba(59, 130, 246, 0.3);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+      }
+      
+      [data-merchant-layout] .nav-item {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      [data-merchant-layout] .nav-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+      }
+      
+      [data-merchant-layout] .nav-item:hover::before {
+        left: 100%;
+      }
+      
+      [data-merchant-layout] .header-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(255, 255, 255, 0.98) 0%, 
+          rgba(248, 250, 252, 0.95) 50%, 
+          rgba(241, 245, 249, 0.9) 100%);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+      
+      .dark [data-merchant-layout] .header-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(15, 23, 42, 0.98) 0%, 
+          rgba(30, 41, 59, 0.95) 50%, 
+          rgba(51, 65, 85, 0.9) 100%);
+        border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      }
+      
+      [data-merchant-layout] .content-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(255, 255, 255, 0.8) 0%, 
+          rgba(248, 250, 252, 0.6) 50%, 
+          rgba(241, 245, 249, 0.4) 100%);
+        backdrop-filter: blur(10px);
+      }
+      
+      .dark [data-merchant-layout] .content-enhanced {
+        background: linear-gradient(135deg, 
+          rgba(15, 23, 42, 0.8) 0%, 
+          rgba(30, 41, 59, 0.6) 50%, 
+          rgba(51, 65, 85, 0.4) 100%);
+      }
+      /* Light mode - Atlantis Theme Colors */
+      html:not(.dark) body {
+        color: #2F2B2C; /* رمادي داكن للنص - foreground */
+        background: 
+          radial-gradient(circle at 20% 80%, rgba(90, 38, 71, 0.08) 0%, transparent 60%),
+          radial-gradient(circle at 80% 20%, rgba(200, 155, 60, 0.12) 0%, transparent 60%),
+          radial-gradient(circle at 40% 40%, rgba(244, 194, 194, 0.15) 0%, transparent 60%),
+          radial-gradient(circle at 60% 60%, rgba(90, 38, 71, 0.06) 0%, transparent 50%),
+          radial-gradient(circle at 30% 70%, rgba(200, 155, 60, 0.1) 0%, transparent 55%),
+          linear-gradient(135deg, #FDF8F6 0%, #FAF0ED 30%, #F8E8E4 70%, #F4C2C2 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+      }
+      /* Animated background elements for light mode - Atlantis colors */
+      html:not(.dark) body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+          radial-gradient(circle at 10% 20%, rgba(90, 38, 71, 0.06) 0%, transparent 50%),
+          radial-gradient(circle at 90% 80%, rgba(200, 155, 60, 0.08) 0%, transparent 50%),
+          radial-gradient(circle at 50% 50%, rgba(244, 194, 194, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 70% 30%, rgba(90, 38, 71, 0.05) 0%, transparent 45%),
+          radial-gradient(circle at 25% 75%, rgba(200, 155, 60, 0.08) 0%, transparent 50%);
+        animation: lightModeFloat 20s ease-in-out infinite;
+        pointer-events: none;
+        z-index: -1;
+      }
+      @keyframes lightModeFloat {
+        0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+        25% { transform: translateY(-20px) rotate(1deg); opacity: 0.8; }
+        50% { transform: translateY(-10px) rotate(-1deg); opacity: 0.6; }
+        75% { transform: translateY(-30px) rotate(0.5deg); opacity: 0.9; }
+      }
+      html:not(.dark) body h1,
+      html:not(.dark) body h2,
+      html:not(.dark) body h3,
+      html:not(.dark) body h4,
+      html:not(.dark) body h5,
+      html:not(.dark) body h6,
+      html:not(.dark) body p,
+      html:not(.dark) body span,
+      html:not(.dark) body label,
+      html:not(.dark) body div {
+        color: inherit;
+      }
+      /* Force hero text visibility in light mode - Atlantis */
+      html:not(.dark) .heading-ar {
+        color: #5A2647 !important; /* عنابي ملكي */
+        background: none !important;
+        -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+        -webkit-text-fill-color: unset !important;
+      }
+      html:not(.dark) .premium-text {
+        color: #5A2647 !important; /* عنابي */
+      }
+      html:not(.dark) .elegant-text {
+        color: #7B6E70 !important; /* رمادي للنص الثانوي */
+      }
+      /* Force header and card gradients in light mode - Atlantis */
+      html:not(.dark) .bg-gradient-to-r,
+      html:not(.dark) .bg-gradient-persian,
+      html:not(.dark) .bg-gradient-hero {
+        color: #2F2B2C !important;
+        background: linear-gradient(135deg, #FDF8F6 0%, #FAF0ED 100%) !important;
+        -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+        -webkit-text-fill-color: unset !important;
+      }
+      html:not(.dark) .text-persian {
+        color: #5A2647 !important;
+      }
+      html:not(.dark) .text-white {
+        color: #2F2B2C !important;
+      }
+      html:not(.dark) .border-persian {
+        border-color: #E6D8D3 !important;
+      }
+      html:not(.dark) .bg-persian {
+        background: #FDF8F6 !important;
+      }
+      html:not(.dark) .bg-green-50 {
+        background: #f0fdf4 !important;
+        color: #166534 !important;
+      }
+      html:not(.dark) .text-green-600 {
+        color: #166534 !important;
+      }
+      /* Store Settings Page Light Mode - Atlantis Theme */
+      html:not(.dark) [data-page="store-settings"] {
+        background: 
+          radial-gradient(circle at 15% 85%, rgba(90, 38, 71, 0.08) 0%, transparent 50%),
+          radial-gradient(circle at 85% 15%, rgba(200, 155, 60, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 45% 45%, rgba(244, 194, 194, 0.12) 0%, transparent 50%),
+          linear-gradient(135deg, #FDF8F6 0%, #ffffff 40%, #FAF0ED 80%, #F8E8E4 100%);
+        background-attachment: fixed;
+      }
+      html:not(.dark) [data-page="store-settings"] .bg-card {
+        background: rgba(255, 255, 255, 0.95) !important;
+        border: 1px solid rgba(230, 216, 211, 0.5) !important;
+        box-shadow: 0 8px 25px -5px rgba(90, 38, 71, 0.08), 0 4px 6px -2px rgba(90, 38, 71, 0.04) !important;
+        backdrop-filter: blur(8px) !important;
+      }
+      html:not(.dark) [data-page="store-settings"] .bg-muted {
+        background: rgba(253, 248, 246, 0.8) !important;
+        border: 1px solid rgba(230, 216, 211, 0.3) !important;
+      }
+      html:not(.dark) [data-page="store-settings"] .border {
+        border-color: rgba(230, 216, 211, 0.4) !important;
+      }
+      html:not(.dark) [data-page="store-settings"] .text-muted-foreground {
+        color: #7B6E70 !important;
+      }
+      html:not(.dark) [data-page="store-settings"] .bg-primary {
+        background: linear-gradient(135deg, #5A2647 0%, #7A3659 100%) !important;
+        color: white !important;
+      }
+      html:not(.dark) [data-page="store-settings"] .bg-secondary {
+        background: rgba(244, 194, 194, 0.3) !important;
+        color: #5A2647 !important;
+        border: 1px solid rgba(230, 216, 211, 0.4) !important;
+      }
+      /* Enhanced tabs for store settings - Atlantis */
+      html:not(.dark) [data-page="store-settings"] [role="tablist"] {
+        background: linear-gradient(135deg, #FDF8F6 0%, #ffffff 50%, #FAF0ED 100%) !important;
+        border: 1px solid rgba(230, 216, 211, 0.4) !important;
+        box-shadow: 0 4px 12px rgba(90, 38, 71, 0.06) !important;
+        border-radius: 12px !important;
+      }
+      html:not(.dark) [data-page="store-settings"] [role="tab"] {
+        color: #7B6E70 !important;
+        transition: all 0.3s ease !important;
+      }
+      html:not(.dark) [data-page="store-settings"] [role="tab"][aria-selected="true"] {
+        background: linear-gradient(135deg, #5A2647 0%, #7A3659 100%) !important;
+        color: white !important;
+        box-shadow: 0 4px 12px rgba(90, 38, 71, 0.25) !important;
+        border-radius: 8px !important;
+      }
+      /* Enhanced form elements - Atlantis */
+      html:not(.dark) [data-page="store-settings"] input,
+      html:not(.dark) [data-page="store-settings"] textarea,
+      html:not(.dark) [data-page="store-settings"] select {
+        background: rgba(255, 255, 255, 0.9) !important;
+        border: 1px solid rgba(230, 216, 211, 0.5) !important;
+        color: #2F2B2C !important;
+        box-shadow: 0 2px 8px rgba(90, 38, 71, 0.04) !important;
+      }
+      html:not(.dark) [data-page="store-settings"] input:focus,
+      html:not(.dark) [data-page="store-settings"] textarea:focus,
+      html:not(.dark) [data-page="store-settings"] select:focus {
+        border-color: #5A2647 !important;
+        box-shadow: 0 0 0 3px rgba(90, 38, 71, 0.08) !important;
+        outline: none !important;
+      }
+      /* Enhanced buttons - Atlantis */
+      html:not(.dark) [data-page="store-settings"] button {
+        background: linear-gradient(135deg, #5A2647 0%, #7A3659 100%) !important;
+        color: white !important;
+        border: none !important;
+        box-shadow: 0 4px 12px rgba(90, 38, 71, 0.25) !important;
+        transition: all 0.3s ease !important;
+      }
+      html:not(.dark) [data-page="store-settings"] button:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 6px 16px rgba(90, 38, 71, 0.35) !important;
+      }
+      /* Enhanced badges - Atlantis */
+      html:not(.dark) [data-page="store-settings"] .badge {
+        background: rgba(244, 194, 194, 0.3) !important;
+        color: #5A2647 !important;
+        border: 1px solid rgba(200, 155, 60, 0.3) !important;
+      }
+      html:not(.dark) body [class*="text-muted-foreground"] {
+        color: #7B6E70 !important; /* رمادي دافئ للنص الثانوي */
+      }
+      html:not(.dark) body [class*="CardTitle"],
+      html:not(.dark) body [role="heading"] {
+        color: #2F2B2C !important;
+      }
+      /* Enhanced light mode cards - Atlantis */
+      html:not(.dark) body [class*="Card"] {
+        background: rgba(255, 255, 255, 0.96) !important;
+        border: 1px solid rgba(230, 216, 211, 0.4) !important;
+        box-shadow: 0 12px 24px -8px rgba(90, 38, 71, 0.06), 0 4px 10px -2px rgba(90, 38, 71, 0.04) !important;
+        backdrop-filter: blur(8px) !important;
+      }
+      /* Enhanced light mode buttons - Atlantis */
+      html:not(.dark) body [class*="Button"] {
+        background: linear-gradient(135deg, #5A2647 0%, #7A3659 100%) !important;
+        color: white !important;
+        border: 1px solid rgba(200, 155, 60, 0.3) !important;
+        box-shadow: 0 6px 14px rgba(90, 38, 71, 0.15) !important;
+        transform: none !important;
+      }
+      /* Enhanced light mode inputs - Atlantis */
+      html:not(.dark) body input,
+      html:not(.dark) body textarea,
+      html:not(.dark) body select {
+        background: rgba(255, 255, 255, 0.95) !important;
+        border: 2px solid rgba(230, 216, 211, 0.5) !important;
+        color: #2F2B2C !important;
+        box-shadow: 0 4px 12px rgba(90, 38, 71, 0.04) !important;
+        transition: all 0.3s ease !important;
+      }
+      html:not(.dark) body input:focus,
+      html:not(.dark) body textarea:focus,
+      html:not(.dark) body select:focus {
+        border-color: #5A2647 !important;
+        box-shadow: 0 0 0 3px rgba(90, 38, 71, 0.08) !important;
+        outline: none !important;
+      }
+      /* Enhanced tabs - Atlantis */
+      html:not(.dark) body [role="tablist"] {
+        background: linear-gradient(135deg, #FDF8F6 0%, #ffffff 50%, #FAF0ED 100%) !important;
+        border: 1px solid rgba(230, 216, 211, 0.4) !important;
+        box-shadow: 0 8px 18px rgba(90, 38, 71, 0.06) !important;
+        border-radius: 12px !important;
+      }
+      html:not(.dark) body [role="tab"] {
+        background: transparent !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+      }
+      html:not(.dark) body [role="tab"][aria-selected="true"] {
+        background: linear-gradient(135deg, #F4C2C2 0%, #EAB8B8 100%) !important;
+        color: #5A2647 !important;
+        box-shadow: 0 4px 10px rgba(90, 38, 71, 0.1) !important;
+        transform: none !important;
+      }
+      /* Enhanced QR code container - Atlantis */
+      html:not(.dark) body [class*="QR"] {
+        background: white !important;
+        border: 3px solid rgba(200, 155, 60, 0.4) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 12px 24px rgba(90, 38, 71, 0.1) !important;
+        padding: 16px !important;
+      }
+    </style>
+  <title>عالم أتلانتس</title>
+    <meta name="description" content="عالم أتلانتس - منصة تسويق وتجارة إلكترونية متكاملة" />
+    <meta name="author" content="عالم أتلانتس" />
+
+    <meta property="og:title" content="عالم أتلانتس" />
+    <meta property="og:description" content="عالم أتلانتس - منصة تسويق وتجارة إلكترونية متكاملة" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@lovable_dev" />
+    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+  </head>
+
+  <body>
+    <div id="root">
+      <!-- Inline skeleton matching hero layout for faster LCP -->
+      <div id="initial-loader" style="min-height:100vh;background:linear-gradient(to bottom right,hsl(222 47% 11%),hsl(217 33% 17%));font-family:'Noto Sans Arabic',system-ui,sans-serif;direction:rtl;">
+        <header style="display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;border-bottom:1px solid rgba(255,255,255,0.1);">
+          <div style="width:120px;height:40px;background:rgba(255,255,255,0.1);border-radius:8px;"></div>
+          <div style="display:flex;gap:1rem;">
+            <div style="width:80px;height:36px;background:rgba(255,255,255,0.05);border-radius:8px;"></div>
+            <div style="width:80px;height:36px;background:rgba(255,255,255,0.05);border-radius:8px;"></div>
+          </div>
+        </header>
+        <main style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;padding:2rem;text-align:center;">
+          <div style="display:flex;align-items:center;justify-content:center;">
+            <div style="width:48px;height:48px;border:4px solid rgba(59,130,246,0.3);border-top-color:#3b82f6;border-radius:50%;animation:spin 1s linear infinite;"></div>
+          </div>
+        </main>
+      </div>
+      <style>
+        #initial-loader{opacity:1;transition:opacity .3s ease-out}
+        @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+      </style>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>document.addEventListener('DOMContentLoaded',function(){var l=document.getElementById('initial-loader');if(l){requestAnimationFrame(function(){l.style.opacity='0';setTimeout(function(){l.remove()},300)})}})</script>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+-- إضافة جداول متغيرات المنتجات (تصحيح)
+-- لا يوجد جدول products منفصل، فالمنتجات موجودة في جداول متنوعة
+-- سنربط المتغيرات بمعرف المنتج مباشرة
+
+CREATE TABLE IF NOT EXISTS public.product_variants (
+  id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
+  product_id UUID NOT NULL, -- معرف المنتج من أي جدول منتجات
+  variant_name TEXT NOT NULL, -- مثل "أحمر - كبير"
+  variant_type TEXT NOT NULL, -- مثل "color", "size", "material"
+  variant_value TEXT NOT NULL, -- مثل "أحمر", "كبير", "قطن"
+  variant_display_value TEXT, -- القيمة للعرض (مثل كود اللون)
+  price_adjustment_sar NUMERIC DEFAULT 0, -- فرق السعر عن السعر الأساسي
+  stock_quantity INTEGER DEFAULT 0,
+  sku TEXT, -- رمز المنتج الفرعي
+  is_available BOOLEAN DEFAULT true,
+  sort_order INTEGER DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+-- إضافة فهرس للبحث السريع
+CREATE INDEX IF NOT EXISTS idx_product_variants_product_id ON public.product_variants(product_id);
+CREATE INDEX IF NOT EXISTS idx_product_variants_type ON public.product_variants(variant_type);
+CREATE INDEX IF NOT EXISTS idx_product_variants_available ON public.product_variants(is_available);
+
+-- إضافة جدول خيارات المتغيرات المحفوظة (للاختيار السريع)
+CREATE TABLE IF NOT EXISTS public.product_variant_options (
+  id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
+  variant_type TEXT NOT NULL, -- "color", "size", etc.
+  option_name TEXT NOT NULL, -- "أحمر", "كبير", etc.
+  option_value TEXT NOT NULL, -- hex color code or standardized value
+  display_order INTEGER DEFAULT 0,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+-- إضافة بيانات أساسية للخيارات
+INSERT INTO public.product_variant_options (variant_type, option_name, option_value, display_order) 
+VALUES 
+  -- الألوان
+  ('color', 'أحمر', '#FF0000', 1),
+  ('color', 'أزرق', '#0000FF', 2),
+  ('color', 'أخضر', '#008000', 3),
+  ('color', 'أسود', '#000000', 4),
+  ('color', 'أبيض', '#FFFFFF', 5),
+  ('color', 'رمادي', '#808080', 6),
+  ('color', 'بني', '#A52A2A', 7),
+  ('color', 'وردي', '#FFC0CB', 8),
+  ('color', 'أصفر', '#FFFF00', 9),
+  ('color', 'برتقالي', '#FFA500', 10),
+  
+  -- الأحجام - ملابس
+  ('size', 'صغير جداً', 'XS', 1),
+  ('size', 'صغير', 'S', 2),
+  ('size', 'متوسط', 'M', 3),
+  ('size', 'كبير', 'L', 4),
+  ('size', 'كبير جداً', 'XL', 5),
+  ('size', 'كبير جداً جداً', 'XXL', 6),
+  
+  -- أحجام الأحذية
+  ('shoe_size', '38', '38', 1),
+  ('shoe_size', '39', '39', 2),
+  ('shoe_size', '40', '40', 3),
+  ('shoe_size', '41', '41', 4),
+  ('shoe_size', '42', '42', 5),
+  ('shoe_size', '43', '43', 6),
+  ('shoe_size', '44', '44', 7),
+  ('shoe_size', '45', '45', 8);
+
+-- إضافة عمود للمتغيرات المختارة في السلة
+ALTER TABLE public.cart_items 
+ADD COLUMN IF NOT EXISTS selected_variants JSONB DEFAULT '{}';
+
+-- تحديث جدول عناصر الطلبات لحفظ المتغيرات
+ALTER TABLE public.ecommerce_order_items 
+ADD COLUMN IF NOT EXISTS selected_variants JSONB DEFAULT '{}';
+
+-- RLS Policies
+ALTER TABLE public.product_variants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.product_variant_options ENABLE ROW LEVEL SECURITY;
+
+-- سياسات الوصول للمتغيرات
+CREATE POLICY "Anyone can view available product variants" 
+ON public.product_variants FOR SELECT 
+USING (is_available = true);
+
+CREATE POLICY "Admins can manage all variants" 
+ON public.product_variants FOR ALL 
+USING (get_current_user_role() = 'admin');
+
+-- سياسات خيارات المتغيرات
+CREATE POLICY "Anyone can view variant options" 
+ON public.product_variant_options FOR SELECT 
+USING (is_active = true);
+
+CREATE POLICY "Admins can manage variant options" 
+ON public.product_variant_options FOR ALL 
+USING (get_current_user_role() = 'admin');

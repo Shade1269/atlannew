@@ -1,0 +1,73 @@
+openapi: 3.1.0
+info:
+  title: AgentOps API
+  version: 1.0.0
+servers:
+  - url: https://YOUR-DOMAIN
+paths:
+  /api/proposals:
+    post:
+      operationId: createProposal
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message]
+              properties:
+                message:
+                  type: string
+                  description: "طلب المستخدم"
+      responses:
+        "200":
+          description: OK
+  /api/proposals/{id}/approve:
+    post:
+      operationId: approveProposal
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                branch:
+                  type: string
+                title:
+                  type: string
+      responses:
+        "200":
+          description: OK
+  /api/proposals/{id}:
+    get:
+      operationId: getProposal
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: OK
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key

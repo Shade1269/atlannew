@@ -1,0 +1,43 @@
+name: DB CI
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+  migrations-check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: shadow
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 10s
+          --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Supabase CLI
+        run: |
+          curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+          npm i -g supabase
+      - name: Apply migrations to shadow
+        env:
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGDATABASE: shadow
+        run: |
+          for f in supabase/migrations/*.sql; do
+            echo "Applying $f"
+            psql "postgresql://$PGUSER:$PGPASSWORD@$PGHOST:$PGPORT/$PGDATABASE" -v ON_ERROR_STOP=1 -f "$f"
+          done
+      - name: Supabase db push --dry-run (optional)
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/shadow
+        run: |
+          supabase db push --db-url "$DATABASE_URL" --dry-run || true
