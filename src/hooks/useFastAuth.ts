@@ -28,12 +28,21 @@ export interface FastUserProfile {
 
 export type FastAuthRole = "admin" | "affiliate" | "marketer" | "merchant";
 
+/** بيانات إضافية عند التسجيل كتاجر */
+export interface MerchantSignUpData {
+  phone: string;
+  address: string;
+  commercial_registry_url: string;
+}
+
 export interface FastAuthSignUpArgs {
   email: string;
   password: string;
   fullName: string;
   username: string;
   role: FastAuthRole;
+  /** مطلوب عند role === "merchant" */
+  merchantData?: MerchantSignUpData;
 }
 
 export interface SignUpServices {

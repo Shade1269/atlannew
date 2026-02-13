@@ -1,6 +1,6 @@
 export const performSignUpRuntime = async (
   { supabase, toast, fetchUserProfile, getBaseUrlFn }: any,
-  { email, password, fullName, username, role }: any
+  { email, password, fullName, username, role, merchantData }: any
 ): Promise<{ data?: any; error: any }> => {
   const fallbackGetBaseUrl = () => {
     if (typeof window !== "undefined") {
@@ -63,16 +63,23 @@ export const performSignUpRuntime = async (
 
     const redirectUrl = `${resolveBaseUrl()}/`;
 
+    const signUpMetadata: Record<string, unknown> = {
+      full_name: fullName,
+      username: normalizedUsername,
+      role: normalizedRole,
+    };
+    if (merchantData && typeof merchantData === "object") {
+      if (merchantData.phone) signUpMetadata.phone = merchantData.phone;
+      if (merchantData.address) signUpMetadata.address = merchantData.address;
+      if (merchantData.commercial_registry_url) signUpMetadata.commercial_registry_url = merchantData.commercial_registry_url;
+    }
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: redirectUrl,
-        data: {
-          full_name: fullName,
-          username: normalizedUsername,
-          role: normalizedRole,
-        },
+        data: signUpMetadata,
       },
     });
 
@@ -126,6 +133,20 @@ export const performSignUpRuntime = async (
             "تم إنشاء الحساب ولكن حدث خطأ في حفظ بيانات الملف الشخصي.",
           variant: "destructive",
         });
+      }
+
+      // حفظ رقم الهاتف والعنوان للتاجر في profiles إن وُجدت
+      if (merchantData && (merchantData.phone || merchantData.address)) {
+        const { error: updateErr } = await supabase
+          .from("profiles")
+          .update({
+            ...(merchantData.phone && { phone: merchantData.phone }),
+            // إن كان الجدول يدعم حقل العنوان يمكن إضافته لاحقاً
+          })
+          .eq("auth_user_id", data.user.id);
+        if (updateErr) {
+          console.warn("Error updating profile phone/address:", updateErr);
+        }
       }
 
       await fetchUserProfile(data.user.id, false);
