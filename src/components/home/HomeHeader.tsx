@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFastAuth } from "@/hooks/useFastAuth";
 import { useAffiliateStore } from "@/hooks/useAffiliateStore";
@@ -50,12 +50,21 @@ export const HomeHeader: React.FC<HomeHeaderProps> = () => {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const y = window.scrollY;
+      setScrolled(y > 20);
+      if (y > 80) {
+        setHeaderVisible(y <= lastScrollY.current);
+      } else {
+        setHeaderVisible(true);
+      }
+      lastScrollY.current = y;
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -93,9 +102,9 @@ export const HomeHeader: React.FC<HomeHeaderProps> = () => {
       <header
         className={`sticky top-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-anaqati-cream/95 backdrop-blur-xl border-b border-anaqati-border/50 shadow-lg shadow-black/5"
-            : "bg-anaqati-cream/98 backdrop-blur-md border-b border-anaqati-border/30"
-        }`}
+            ? "bg-background/90 dark:bg-background/90 backdrop-blur-xl shadow-lg shadow-black/5"
+            : "bg-transparent dark:bg-transparent backdrop-blur-none"
+        } ${!headerVisible ? "-translate-y-full" : "translate-y-0"}`}
       >
         <div className="container mx-auto px-4 lg:px-6">
           <div className="flex items-center justify-between h-16 lg:h-20">

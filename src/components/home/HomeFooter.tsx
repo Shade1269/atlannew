@@ -71,6 +71,14 @@ export const HomeFooter: React.FC = () => {
                   to="/store" 
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
+                  {t('browseProducts')}
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/store" 
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
                   {t('stores')}
                 </Link>
               </li>

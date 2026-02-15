@@ -92,7 +92,7 @@ const AffiliateStoreCard: React.FC<{
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-xl border border-anaqati-border p-6 hover:border-primary/40 shadow-anaqati hover:shadow-anaqati-hover transition-all duration-300"
+      className="bg-card dark:bg-card rounded-xl border border-border p-6 hover:border-primary/50 shadow-anaqati hover:shadow-anaqati-hover transition-all duration-300"
     >
       {/* Icon */}
       <div className="w-14 h-14 rounded-xl bg-secondary/20 flex items-center justify-center mb-5">
@@ -122,9 +122,9 @@ const AffiliateStoreCard: React.FC<{
           </div>
           <div className="flex gap-2">
             <UnifiedButton
-              variant="secondary"
+              variant="outline"
               size="sm"
-              className="flex-1 dark:bg-white dark:text-black dark:border-2 dark:border-[#D4AF37] dark:hover:bg-white/90"
+              className="flex-1 border-2 bg-transparent text-primary hover:bg-primary/15 dark:border-[hsl(24,96%,52%)] dark:text-[hsl(24,96%,52%)] dark:hover:bg-[hsl(24,96%,52%)]/20"
               onClick={() => window.open(`/${store.store_slug}`, "_blank")}
             >
               <ExternalLink className="w-4 h-4 ml-2" />
@@ -133,7 +133,7 @@ const AffiliateStoreCard: React.FC<{
             <UnifiedButton
               variant="primary"
               size="sm"
-              className="flex-1 dark:bg-white dark:text-black dark:border-2 dark:border-[#D4AF37] dark:hover:bg-white/90"
+              className="flex-1 bg-primary text-white hover:bg-primary/90 dark:bg-[hsl(24,96%,52%)] dark:text-white dark:hover:bg-[hsl(24,96%,55%)]"
               onClick={() => onNavigate("/products")}
             >
               <Package className="w-4 h-4 ml-2" />
@@ -149,9 +149,9 @@ const AffiliateStoreCard: React.FC<{
           </div>
           <div className="flex gap-2">
             <UnifiedButton
-              variant="secondary"
+              variant="outline"
               size="sm"
-              className="flex-1 dark:bg-white dark:text-black dark:border-2 dark:border-[#D4AF37] dark:hover:bg-white/90"
+              className="flex-1 border-2 bg-transparent text-primary hover:bg-primary/15 dark:border-[hsl(24,96%,52%)] dark:text-[hsl(24,96%,52%)] dark:hover:bg-[hsl(24,96%,52%)]/20"
               onClick={() => onNavigate("/affiliate/store/setup")}
             >
               متجري
@@ -159,7 +159,7 @@ const AffiliateStoreCard: React.FC<{
             <UnifiedButton
               variant="primary"
               size="sm"
-              className="flex-1 dark:bg-white dark:text-black dark:border-2 dark:border-[#D4AF37] dark:hover:bg-white/90"
+              className="flex-1 bg-primary text-white hover:bg-primary/90 dark:bg-[hsl(24,96%,52%)] dark:text-white dark:hover:bg-[hsl(24,96%,55%)]"
               onClick={() => onNavigate("/products")}
             >
               <Package className="w-4 h-4 ml-2" />
@@ -179,7 +179,7 @@ const CommunityCard: React.FC<{ onNavigate: (path: string) => void }> = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-xl border border-anaqati-border p-6 hover:border-primary/40 shadow-anaqati hover:shadow-anaqati-hover transition-all duration-300 cursor-pointer"
+      className="bg-card dark:bg-card rounded-xl border border-border p-6 hover:border-primary/50 shadow-anaqati hover:shadow-anaqati-hover transition-all duration-300 cursor-pointer"
       onClick={() => onNavigate("/atlantis")}
     >
       {/* Icon */}

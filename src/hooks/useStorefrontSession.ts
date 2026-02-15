@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { supabasePublic } from '@/integrations/supabase/publicClient';
-import { StorefrontSession } from '@/utils/storefrontSession';
+import { useState, useEffect } from "react";
+import { supabasePublic } from "@/integrations/supabase/publicClient";
+import { StorefrontSession } from "@/utils/storefrontSession";
 
 interface StorefrontSessionData {
   sessionId: string;
@@ -18,7 +18,7 @@ export const useStorefrontSession = (storeSlug: string, storeId?: string) => {
     const initializeSession = async () => {
       try {
         setLoading(true);
-        
+
         // إنشاء أو الحصول على جلسة المتجر
         const storefrontSession = new StorefrontSession(storeSlug);
         let sessionData = storefrontSession.getSession();
@@ -30,16 +30,19 @@ export const useStorefrontSession = (storeSlug: string, storeId?: string) => {
 
         if (sessionData) {
           // البحث عن أو إنشاء سلة للجلسة
-          let cartId = await getOrCreateCart(sessionData.sessionId, storeId || sessionData.storeId);
-          
+          let cartId = await getOrCreateCart(
+            sessionData.sessionId,
+            storeId || sessionData.storeId,
+          );
+
           setSession({
             sessionId: sessionData.sessionId,
             storeId: storeId || sessionData.storeId,
-            cartId
+            cartId,
           });
         }
       } catch (error) {
-        console.error('Error initializing storefront session:', error);
+        console.error("Error initializing storefront session:", error);
       } finally {
         setLoading(false);
       }
@@ -48,14 +51,17 @@ export const useStorefrontSession = (storeSlug: string, storeId?: string) => {
     initializeSession();
   }, [storeSlug, storeId]);
 
-  const getOrCreateCart = async (sessionId: string, storeId: string): Promise<string | undefined> => {
+  const getOrCreateCart = async (
+    sessionId: string,
+    storeId: string,
+  ): Promise<string | undefined> => {
     try {
       // البحث عن سلة موجودة
       const { data: existingCart } = await supabasePublic
-        .from('shopping_carts')
-        .select('id')
-        .eq('session_id', sessionId)
-        .eq('affiliate_store_id', storeId)
+        .from("shopping_carts")
+        .select("id")
+        .eq("session_id", sessionId)
+        .eq("affiliate_store_id", storeId)
         .maybeSingle();
 
       if (existingCart) {
@@ -64,19 +70,19 @@ export const useStorefrontSession = (storeSlug: string, storeId?: string) => {
 
       // إنشاء سلة جديدة
       const { data: newCart, error } = await supabasePublic
-        .from('shopping_carts')
+        .from("shopping_carts")
         .insert({
           session_id: sessionId,
           affiliate_store_id: storeId,
-          user_id: null // جلسة زائر
+          user_id: null, // جلسة زائر
         })
-        .select('id')
+        .select("id")
         .single();
 
       if (error) throw error;
       return newCart.id;
     } catch (error) {
-      console.error('Error managing cart:', error);
+      console.error("Error managing cart:", error);
       return undefined;
     }
   };
@@ -90,6 +96,6 @@ export const useStorefrontSession = (storeSlug: string, storeId?: string) => {
   return {
     session,
     loading,
-    clearSession
+    clearSession,
   };
 };

@@ -62,3 +62,423 @@
 .landing-hover-scale:hover {
   transform: scale(1.1);
 }
+
+/* شكل لوبي متحرك */
+@keyframes landing-loop-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.landing-loop-shape {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px dashed hsl(var(--primary) / 0.35);
+  pointer-events: none;
+}
+
+.landing-loop-shape-1 {
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  right: -100px;
+  animation: landing-loop-rotate 25s linear infinite;
+}
+
+.landing-loop-shape-2 {
+  width: 280px;
+  height: 280px;
+  bottom: -60px;
+  left: -60px;
+  animation: landing-loop-rotate 20s linear infinite reverse;
+  border-color: hsl(var(--accent) / 0.3);
+}
+
+.landing-hover-lift-sm {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* الإطار كله متحرك — الموجة والحد يتحركان، وجواه الكلام */
+@keyframes seaWaveFlow {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(-25%) translateY(2px); }
+  50% { transform: translateX(-50%) translateY(-2px); }
+  75% { transform: translateX(-75%) translateY(2px); }
+}
+
+/* حركة الإطار بعد تحديد الشكل الموجي */
+@keyframes frameWave {
+  0%, 100% { transform: scaleY(1) translateY(0); }
+  50% { transform: scaleY(1.02) translateY(5px); }
+}
+
+@keyframes frameWaveAlt {
+  0%, 100% { transform: scaleY(1) translateY(0); }
+  50% { transform: scaleY(1.02) translateY(-5px); }
+}
+
+@keyframes borderFlow {
+  0% { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.wave-strip-scroll-wrap {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease-out, transform 0.6s ease-out;
+  transition-delay: calc(var(--strip-index, 0) * 0.1s);
+}
+.wave-strip-scroll-wrap.wave-strip-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wave-strip {
+  position: relative;
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.35),
+    0 4px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.wave-strip-scroll-wrap:hover .wave-strip {
+  transform: scale(1.01);
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.45),
+    0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* شكل الإطار: تموج سلس، بدون حدود حادة (SVG path بمنحنيات Bezier) */
+.wave-frame-bottom {
+  clip-path: url(#waveSmoothBottom);
+}
+/* تموج من الطرفين — أعلى وأسفل متموجين مثل الصورة */
+.wave-frame-both {
+  clip-path: url(#waveBothEdges);
+}
+
+/* الإطار (الشكل والحد) متحرك — الموجات 1 و 3 */
+.wave-strip-1,
+.wave-strip-3 {
+  animation: frameWave 5s ease-in-out infinite;
+}
+.wave-strip-2,
+.wave-strip-4 {
+  animation: frameWaveAlt 5s ease-in-out infinite;
+}
+.wave-strip-2 { animation-delay: 0.4s; }
+.wave-strip-3 { animation-delay: 0.8s; }
+.wave-strip-4 { animation-delay: 1.2s; }
+
+/* لمعة متحركة على الإطار */
+.wave-strip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(105deg, transparent 0%, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%, transparent 100%);
+  background-size: 200% 100%;
+  animation: borderFlow 5s linear infinite;
+  pointer-events: none;
+}
+
+/* نمط الموجة المتحرك داخل الإطار */
+.wave-strip::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 0;
+  right: 0;
+  height: 200%;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 80px,
+    rgba(255, 255, 255, 0.08) 80px,
+    rgba(255, 255, 255, 0.08) 81px
+  );
+  animation: seaWaveFlow 8s linear infinite;
+  pointer-events: none;
+}
+
+.wave-sea-pattern {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 200%;
+  height: 120%;
+  transform: translateY(-50%);
+  animation: seaWaveFlow 6s linear infinite;
+}
+.wave-strip:nth-child(2) .wave-sea-pattern,
+.wave-strip:nth-child(4) .wave-sea-pattern {
+  animation-direction: reverse;
+  animation-duration: 7s;
+}
+
+/* المحتوى يتحرك مع الموجة (داخل الـ strip) — padding كافٍ علشان ما يخرجش عن حدود الموجة */
+.wave-strip-content {
+  position: relative;
+  z-index: 2;
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 2.75rem 1.5rem 3rem;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.wave-strip-content > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* لون واحد لكل موجة — الشكل من clip-path (موجة) */
+.wave-strip-1 {
+  background: hsl(24, 96%, 48%);
+  margin-bottom: -1px;
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,0.4), 0 6px 30px rgba(0,0,0,0.12);
+}
+.wave-strip-2 {
+  background: hsl(166, 64%, 45%);
+  margin-top: -2px;
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,0.4), 0 6px 30px rgba(0,0,0,0.12);
+}
+.wave-strip-3 {
+  background: hsl(24, 96%, 52%);
+  margin-top: -2px;
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,0.4), 0 6px 30px rgba(0,0,0,0.12);
+}
+.wave-strip-4 {
+  background: hsl(166, 64%, 50%);
+  margin-top: -2px;
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,0.4), 0 6px 30px rgba(0,0,0,0.12);
+}
+
+/* النمط الليلي — ألوان أوضح واحترافية */
+html.dark .wave-strip-1 {
+  background: hsl(24, 96%, 45%);
+  border-color: hsl(24, 96%, 55%);
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
+}
+html.dark .wave-strip-2 {
+  background: hsl(166, 64%, 42%);
+  border-color: hsl(166, 64%, 58%);
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
+}
+html.dark .wave-strip-3 {
+  background: hsl(24, 96%, 48%);
+  border-color: hsl(24, 96%, 58%);
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
+}
+html.dark .wave-strip-4 {
+  background: hsl(166, 64%, 48%);
+  border-color: hsl(166, 64%, 60%);
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ========== منصة الشرف — منصة فعلية للأول والثاني والثالث + مربعات للباقي ========== */
+.honor-board {
+  background: linear-gradient(165deg, hsl(var(--card)) 0%, hsl(var(--muted) / 0.5) 100%);
+  border: 2px solid hsl(var(--border));
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.15), 0 0 0 1px hsl(var(--border) / 0.5);
+}
+html.dark .honor-board {
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.4), 0 0 0 1px hsl(var(--border) / 0.6);
+}
+
+.honor-board-podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 140px;
+  padding: 0 0 0.5rem;
+}
+.honor-board-podium-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  max-width: 100px;
+}
+.honor-board-podium-slot .podium-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.35rem;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+.honor-board-podium-slot .podium-name {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
+  max-height: 2.4em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: 0.25rem;
+}
+.honor-board-podium-slot .podium-value {
+  font-size: 0.65rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+.honor-board-podium-slot .podium-stand {
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  margin-top: 0.25rem;
+}
+.honor-board-podium-slot[data-rank="2"] .podium-stand { height: 44px; background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%); }
+.honor-board-podium-slot[data-rank="1"] .podium-stand { height: 58px; background: linear-gradient(180deg, #eab308 0%, #ca8a04 100%); box-shadow: 0 0 20px rgba(234, 179, 8, 0.35); }
+.honor-board-podium-slot[data-rank="3"] .podium-stand { height: 36px; background: linear-gradient(180deg, #d97706 0%, #b45309 100%); }
+.honor-board-podium-slot[data-rank="2"] .podium-avatar { background: linear-gradient(135deg, #94a3b8, #64748b); }
+.honor-board-podium-slot[data-rank="1"] .podium-avatar { background: linear-gradient(135deg, #eab308, #ca8a04); box-shadow: 0 0 16px rgba(234, 179, 8, 0.45); }
+.honor-board-podium-slot[data-rank="3"] .podium-avatar { background: linear-gradient(135deg, #d97706, #b45309); }
+
+.honor-board-rest {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.honor-board-rest-item {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 10px;
+  padding: 0.5rem 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.honor-board-rest-item:hover {
+  border-color: hsl(var(--primary) / 0.4);
+  box-shadow: 0 4px 12px hsl(var(--primary) / 0.08);
+}
+.honor-board-rest-item .rest-rank {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+  font-size: 0.7rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.honor-board-rest-item .rest-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.honor-board-rest-item .rest-value {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+  flex-shrink: 0;
+}
+
+.honor-board-section-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.honor-board-section-title svg {
+  flex-shrink: 0;
+}
+
+/* ========== شريط تقدم أهداف المسوق ========== */
+.goals-progress-wrap {
+  background: linear-gradient(180deg, hsl(var(--muted) / 0.25) 0%, transparent 100%);
+  border-radius: 12px;
+  padding: 0.75rem 0 0;
+}
+
+.goals-progress-track {
+  height: 8px;
+  background: hsl(var(--muted));
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.goals-progress-fill {
+  height: 100%;
+  width: var(--goals-percent, 0%);
+  background: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  border-radius: 999px;
+  transition: width 0.6s ease-out;
+}
+
+.goals-progress-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 8px;
+  background: hsl(var(--card) / 0.6);
+  border: 1px solid hsl(var(--border) / 0.8);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.goals-progress-step.done {
+  border-color: hsl(var(--primary) / 0.35);
+  background: hsl(var(--primary) / 0.06);
+}
+
+.goals-progress-step-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.goals-progress-step.done .goals-progress-step-label {
+  color: hsl(var(--foreground));
+}
+
+.goals-progress-step-value {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: hsl(var(--primary));
+  background: hsl(var(--primary) / 0.12);
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+}

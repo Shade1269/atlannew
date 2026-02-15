@@ -58,10 +58,10 @@ const DropdownMenuSubTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       "flex cursor-pointer select-none items-center rounded-md px-3 py-2.5 text-sm outline-none",
-      "text-foreground",
-      "hover:bg-[hsl(0_60%_97%)] hover:text-primary",
-      "focus:bg-[hsl(0_60%_97%)] focus:text-primary",
-      "data-[state=open]:bg-[hsl(0_60%_97%)] data-[state=open]:text-primary",
+      "text-popover-foreground",
+      "hover:bg-muted hover:text-foreground",
+      "focus:bg-muted focus:text-foreground",
+      "data-[state=open]:bg-muted data-[state=open]:text-foreground",
       "transition-colors duration-150",
       inset && "pl-8",
       className
@@ -83,8 +83,8 @@ const DropdownMenuSubContent = React.forwardRef<
     ref={ref}
     className={cn(
       "z-[100] min-w-[8rem] overflow-hidden",
-      "rounded-lg border border-[hsl(20_30%_87%)] bg-white p-1 text-foreground",
-      "shadow-[0_10px_40px_hsl(320_42%_25%/0.12)]",
+      "rounded-lg border border-border bg-popover p-1 text-popover-foreground",
+      "shadow-lg",
       "data-[state=open]:animate-in data-[state=closed]:animate-out",
       "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
@@ -112,23 +112,19 @@ const DropdownMenuContent = React.forwardRef<
       // WAI-ARIA: role="menu" is automatically added by Radix
       // WCAG 2.4.3: Focus is automatically managed by Radix
       className={cn(
-        // Minimum width and overflow
+        // Minimum width and overflow — ألوان الثيم لظهور النصوص في النمط الليلي/النهاري
         "z-[100] min-w-[180px] overflow-hidden",
-        // Spacing for touch-friendly layout (8px gap between items)
-        "rounded-lg border border-[hsl(20_30%_87%)] bg-white p-1.5 text-foreground space-y-1",
-        "shadow-[0_10px_40px_hsl(320_42%_25%/0.12)]",
+        "rounded-lg border border-border bg-popover p-1.5 text-popover-foreground space-y-1",
+        "shadow-lg",
         // Smooth animations (150-200ms as per UX spec)
         "data-[state=open]:animate-in data-[state=closed]:animate-out",
         "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
         "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
         "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
         "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-        // Animation duration (WCAG compliant - not too fast, not too slow)
         "duration-200",
         className
       )}
-      // Keyboard: Esc closes menu, Arrows navigate, Enter/Space select
-      // These are handled automatically by Radix UI
       {...props}
     />
   </DropdownMenuPrimitive.Portal>
@@ -157,21 +153,16 @@ const DropdownMenuItem = React.forwardRef<
       // Golden side bar on hover/focus/active (as per UX spec)
       "before:absolute before:right-0 before:top-0 before:bottom-0 before:w-[3px] before:rounded-l",
       "before:bg-transparent before:transition-colors before:duration-150",
-      // Default variant
+      // Default variant — نصوص واضحة في القائمة (ليلي/نهاري)
       variant === "default" && [
-        "text-foreground",
-        // Desktop hover
-        "hover:bg-[hsl(0_60%_97%)] hover:text-primary",
-        // Mobile active/touch
-        "active:bg-[hsl(0_60%_97%)] active:text-primary active:scale-[0.98]",
-        // Keyboard focus
-        "focus:bg-[hsl(0_60%_97%)] focus:text-primary",
-        // Focus visible ring for keyboard navigation (WCAG 2.4.7)
+        "text-popover-foreground",
+        "hover:bg-muted hover:text-foreground",
+        "active:bg-muted active:text-foreground active:scale-[0.98]",
+        "focus:bg-muted focus:text-foreground",
         "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-inset",
         "[&>svg]:text-muted-foreground [&>svg]:w-4 [&>svg]:h-4",
         "hover:[&>svg]:text-primary focus:[&>svg]:text-primary active:[&>svg]:text-primary",
-        // Golden bar on hover/focus/active
-        "hover:before:bg-[hsl(43_54%_51%)] focus:before:bg-[hsl(43_54%_51%)] active:before:bg-[hsl(43_54%_51%)]",
+        "hover:before:bg-primary focus:before:bg-primary active:before:bg-primary",
       ],
       // Danger variant (تسجيل الخروج) - Always red as per UX spec
       variant === "danger" && [
@@ -209,10 +200,10 @@ const DropdownMenuCheckboxItem = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex cursor-pointer select-none items-center rounded-md py-2.5 pl-8 pr-3 text-sm outline-none",
-      "text-foreground transition-colors duration-150",
-      "hover:bg-[hsl(0_60%_97%)] hover:text-primary",
-      "focus:bg-[hsl(0_60%_97%)] focus:text-primary",
-      "data-[state=checked]:bg-[hsl(0_62%_86%)] data-[state=checked]:text-primary",
+      "text-popover-foreground transition-colors duration-150",
+      "hover:bg-muted hover:text-foreground",
+      "focus:bg-muted focus:text-foreground",
+      "data-[state=checked]:bg-primary/15 data-[state=checked]:text-primary",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
@@ -221,7 +212,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <DropdownMenuPrimitive.ItemIndicator>
-        <Check className="h-4 w-4 text-[hsl(43_54%_51%)]" />
+        <Check className="h-4 w-4 text-primary" />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
     {children}
@@ -238,10 +229,10 @@ const DropdownMenuRadioItem = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex cursor-pointer select-none items-center rounded-md py-2.5 pl-8 pr-3 text-sm outline-none",
-      "text-foreground transition-colors duration-150",
-      "hover:bg-[hsl(0_60%_97%)] hover:text-primary",
-      "focus:bg-[hsl(0_60%_97%)] focus:text-primary",
-      "data-[state=checked]:bg-[hsl(0_62%_86%)] data-[state=checked]:text-primary",
+      "text-popover-foreground transition-colors duration-150",
+      "hover:bg-muted hover:text-foreground",
+      "focus:bg-muted focus:text-foreground",
+      "data-[state=checked]:bg-primary/15 data-[state=checked]:text-primary",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
@@ -249,7 +240,7 @@ const DropdownMenuRadioItem = React.forwardRef<
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <DropdownMenuPrimitive.ItemIndicator>
-        <Circle className="h-2 w-2 fill-[hsl(43_54%_51%)] text-[hsl(43_54%_51%)]" />
+        <Circle className="h-2 w-2 fill-primary text-primary" />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
     {children}
@@ -266,7 +257,7 @@ const DropdownMenuLabel = React.forwardRef<
   <DropdownMenuPrimitive.Label
     ref={ref}
     className={cn(
-      "px-2 py-1.5 text-sm font-semibold",
+      "px-2 py-1.5 text-sm font-semibold text-popover-foreground",
       inset && "pl-8",
       className
     )}
@@ -281,7 +272,7 @@ const DropdownMenuSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.Separator
     ref={ref}
-    className={cn("-mx-1 my-1.5 h-px bg-[hsl(20_30%_87%)]", className)}
+    className={cn("-mx-1 my-1.5 h-px bg-border", className)}
     {...props}
   />
 ))

@@ -23,40 +23,40 @@ export const DarkModeProvider: React.FC<DarkModeProviderProps> = ({ children }) 
   // Default to Dark Mode for Atlantis platform
   const [isDarkMode, setIsDarkMode] = useState(true);
 
-  // Initialize dark mode from localStorage, default to dark if not set
+  // Initialize: إن لم يكن هناك تفضيل محفوظ، نتبع نظام الجهاز (وضع ليلي/نهاري تلقائي)
   useEffect(() => {
     try {
       const stored = (typeof window !== 'undefined' ? window.localStorage?.getItem('darkMode') : null);
-      // If user has explicitly set a preference, use it. Otherwise default to dark.
-      const shouldBeDark = stored !== null ? stored === 'true' : true;
+      let shouldBeDark: boolean;
+      if (stored !== null) {
+        shouldBeDark = stored === 'true';
+      } else {
+        const prefersDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        shouldBeDark = prefersDark;
+      }
       setIsDarkMode(shouldBeDark);
       updateDarkModeClass(shouldBeDark);
     } catch {
-      // Safari Private mode may block localStorage - default to dark
       setIsDarkMode(true);
       updateDarkModeClass(true);
     }
   }, []);
 
-  // Listen for system theme changes (but default to dark for Atlantis)
+  // عند تغيير نظام الجهاز، نحدث فقط إن لم يكن للمستخدم تفضيل محفوظ
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (_e: MediaQueryListEvent) => {
+    const handleChange = () => {
       try {
         const stored = (typeof window !== 'undefined' ? window.localStorage?.getItem('darkMode') : null);
-        // Only follow system preference if user hasn't set a preference
-        // For Atlantis, we default to dark mode regardless of system preference
         if (stored === null) {
-          // Keep dark mode as default for Atlantis
-          setIsDarkMode(true);
-          updateDarkModeClass(true);
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          setIsDarkMode(prefersDark);
+          updateDarkModeClass(prefersDark);
         }
       } catch {
-        setIsDarkMode(true);
-        updateDarkModeClass(true);
+        // ignore
       }
     };
-
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);

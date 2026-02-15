@@ -107,3 +107,46 @@
 .stat-item:hover {
   transform: scale(1.05);
 }
+
+/* لوجو متحرك في الخلفية */
+@keyframes logoFloat {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(6deg) scale(1.06); }
+}
+
+.hero-logo-bg {
+  animation: logoFloat 14s ease-in-out infinite;
+}
+
+/* جزيئات خفيفة متحركة في خلفية الهيرو */
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hero-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: hsl(var(--primary) / 0.25);
+  animation: heroParticleFloat 12s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.5s);
+  left: calc(var(--i, 0) * 4.5%);
+  top: calc(20% + (var(--i, 0) % 8) * 10%);
+}
+.hero-particle:nth-child(odd) {
+  background: hsl(var(--accent) / 0.2);
+  animation-duration: 14s;
+}
+@keyframes heroParticleFloat {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(10px, -20px) scale(1.2);
+    opacity: 0.9;
+  }
+}

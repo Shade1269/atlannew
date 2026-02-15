@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { supabasePublic } from '@/integrations/supabase/publicClient';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useEffect } from "react";
+import { supabasePublic } from "@/integrations/supabase/publicClient";
+import { useToast } from "@/hooks/use-toast";
 
 interface CartItem {
   id: string;
@@ -21,12 +21,13 @@ export const useStorefrontCart = (cartId?: string) => {
 
   const fetchCartItems = async () => {
     if (!cartId) return;
-    
+
     try {
       setLoading(true);
       const { data, error } = await supabasePublic
-        .from('cart_items')
-        .select(`
+        .from("cart_items")
+        .select(
+          `
           id,
           product_id,
           quantity,
@@ -36,13 +37,14 @@ export const useStorefrontCart = (cartId?: string) => {
             title,
             image_urls
           )
-        `)
-        .eq('cart_id', cartId);
+        `,
+        )
+        .eq("cart_id", cartId);
 
       if (error) throw error;
       setItems(data || []);
     } catch (error) {
-      console.error('Error fetching cart items:', error);
+      console.error("Error fetching cart items:", error);
     } finally {
       setLoading(false);
     }
@@ -52,59 +54,61 @@ export const useStorefrontCart = (cartId?: string) => {
     fetchCartItems();
   }, [cartId]);
 
-  const addToCart = async (productId: string, quantity: number = 1, unitPrice: number) => {
+  const addToCart = async (
+    productId: string,
+    quantity: number = 1,
+    unitPrice: number,
+  ) => {
     if (!cartId) return false;
 
     try {
       // التحقق من وجود المنتج في السلة
       const { data: existingItem } = await supabasePublic
-        .from('cart_items')
-        .select('id, quantity')
-        .eq('cart_id', cartId)
-        .eq('product_id', productId)
+        .from("cart_items")
+        .select("id, quantity")
+        .eq("cart_id", cartId)
+        .eq("product_id", productId)
         .maybeSingle();
 
       if (existingItem) {
         // تحديث الكمية
         const newQuantity = existingItem.quantity + quantity;
         const { error } = await supabasePublic
-          .from('cart_items')
+          .from("cart_items")
           .update({
             quantity: newQuantity,
-            total_price_sar: newQuantity * unitPrice
+            total_price_sar: newQuantity * unitPrice,
           })
-          .eq('id', existingItem.id);
+          .eq("id", existingItem.id);
 
         if (error) throw error;
       } else {
         // إضافة منتج جديد
-        const { error } = await supabasePublic
-          .from('cart_items')
-          .insert({
-            cart_id: cartId,
-            product_id: productId,
-            quantity,
-            unit_price_sar: unitPrice,
-            total_price_sar: quantity * unitPrice
-          });
+        const { error } = await supabasePublic.from("cart_items").insert({
+          cart_id: cartId,
+          product_id: productId,
+          quantity,
+          unit_price_sar: unitPrice,
+          total_price_sar: quantity * unitPrice,
+        });
 
         if (error) throw error;
       }
 
       await fetchCartItems();
-      
+
       toast({
         title: "تمت الإضافة للسلة",
-        description: "تم إضافة المنتج بنجاح"
+        description: "تم إضافة المنتج بنجاح",
       });
 
       return true;
     } catch (error) {
-      console.error('Error adding to cart:', error);
+      console.error("Error adding to cart:", error);
       toast({
         title: "خطأ",
         description: "فشل في إضافة المنتج للسلة",
-        variant: "destructive"
+        variant: "destructive",
       });
       return false;
     }
@@ -116,22 +120,22 @@ export const useStorefrontCart = (cartId?: string) => {
     }
 
     try {
-      const item = items.find(i => i.id === itemId);
+      const item = items.find((i) => i.id === itemId);
       if (!item) return false;
 
       const { error } = await supabasePublic
-        .from('cart_items')
+        .from("cart_items")
         .update({
           quantity: newQuantity,
-          total_price_sar: newQuantity * item.unit_price_sar
+          total_price_sar: newQuantity * item.unit_price_sar,
         })
-        .eq('id', itemId);
+        .eq("id", itemId);
 
       if (error) throw error;
       await fetchCartItems();
       return true;
     } catch (error) {
-      console.error('Error updating quantity:', error);
+      console.error("Error updating quantity:", error);
       return false;
     }
   };
@@ -139,21 +143,21 @@ export const useStorefrontCart = (cartId?: string) => {
   const removeItem = async (itemId: string) => {
     try {
       const { error } = await supabasePublic
-        .from('cart_items')
+        .from("cart_items")
         .delete()
-        .eq('id', itemId);
+        .eq("id", itemId);
 
       if (error) throw error;
       await fetchCartItems();
-      
+
       toast({
         title: "تم الحذف",
-        description: "تم حذف المنتج من السلة"
+        description: "تم حذف المنتج من السلة",
       });
-      
+
       return true;
     } catch (error) {
-      console.error('Error removing item:', error);
+      console.error("Error removing item:", error);
       return false;
     }
   };
@@ -163,19 +167,19 @@ export const useStorefrontCart = (cartId?: string) => {
 
     try {
       const { error } = await supabasePublic
-        .from('cart_items')
+        .from("cart_items")
         .delete()
-        .eq('cart_id', cartId);
+        .eq("cart_id", cartId);
 
       if (error) throw error;
       setItems([]);
-      
+
       toast({
         title: "تم إفراغ السلة",
-        description: "تم حذف جميع المنتجات من السلة"
+        description: "تم حذف جميع المنتجات من السلة",
       });
     } catch (error) {
-      console.error('Error clearing cart:', error);
+      console.error("Error clearing cart:", error);
     }
   };
 
@@ -196,6 +200,6 @@ export const useStorefrontCart = (cartId?: string) => {
     clearCart,
     refreshCart: fetchCartItems,
     total: getTotal(),
-    itemsCount: getItemsCount()
+    itemsCount: getItemsCount(),
   };
 };

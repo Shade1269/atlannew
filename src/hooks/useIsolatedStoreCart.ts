@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { supabasePublic } from '@/integrations/supabase/publicClient';
-import { toast } from 'sonner';
+import { useState, useEffect } from "react";
+import { supabasePublic } from "@/integrations/supabase/publicClient";
+import { toast } from "sonner";
 
 export interface CartItem {
   id: string;
@@ -26,7 +26,9 @@ export const useIsolatedStoreCart = (storeId: string, storeSlug?: string) => {
   // Get or create session-based cart using unified key format
   const getSessionId = () => {
     // Use storeSlug if available, otherwise fallback to storeId
-    const key = storeSlug ? `ea_session_${storeSlug}` : `store_session_${storeId}`;
+    const key = storeSlug
+      ? `ea_session_${storeSlug}`
+      : `store_session_${storeId}`;
     let sessionId = localStorage.getItem(key);
     if (!sessionId) {
       sessionId = crypto.randomUUID();
@@ -39,31 +41,31 @@ export const useIsolatedStoreCart = (storeId: string, storeSlug?: string) => {
     try {
       const sessionId = getSessionId();
 
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         try {
-          localStorage.setItem('storefront:last-session-id', sessionId);
+          localStorage.setItem("storefront:last-session-id", sessionId);
         } catch (error) {
-          console.warn('Unable to persist storefront session id', error);
+          console.warn("Unable to persist storefront session id", error);
         }
       }
 
       // Get or create cart
       let { data: cartData } = await supabasePublic
-        .from('shopping_carts')
-        .select('id')
-        .eq('session_id', sessionId)
-        .eq('affiliate_store_id', storeId)
+        .from("shopping_carts")
+        .select("id")
+        .eq("session_id", sessionId)
+        .eq("affiliate_store_id", storeId)
         .maybeSingle();
 
       if (!cartData) {
         const { data: newCart } = await supabasePublic
-          .from('shopping_carts')
+          .from("shopping_carts")
           .insert({
             session_id: sessionId,
             affiliate_store_id: storeId,
-            user_id: null
+            user_id: null,
           })
-          .select('id')
+          .select("id")
           .single();
         cartData = newCart;
       }
@@ -71,32 +73,33 @@ export const useIsolatedStoreCart = (storeId: string, storeSlug?: string) => {
       if (cartData) {
         // Load cart items
         const { data: items } = await supabasePublic
-          .from('cart_items')
-          .select(`
+          .from("cart_items")
+          .select(
+            `
             id,
             product_id,
             quantity,
             unit_price_sar,
             total_price_sar,
             selected_variants
-          `)
-          .eq('cart_id', cartData.id);
+          `,
+          )
+          .eq("cart_id", cartData.id);
 
         // ✅ تحسين: جلب جميع المنتجات في استعلام واحد بدلاً من استعلام لكل منتج
-        const productIds = (items || []).map(item => item.product_id);
+        const productIds = (items || []).map((item) => item.product_id);
 
         // جلب جميع المنتجات مرة واحدة
-        const { data: productsData } = productIds.length > 0
-          ? await supabasePublic
-            .from('products')
-            .select('id, title, image_urls')
-            .in('id', productIds)
-          : { data: [] };
+        const { data: productsData } =
+          productIds.length > 0
+            ? await supabasePublic
+                .from("products")
+                .select("id, title, image_urls")
+                .in("id", productIds)
+            : { data: [] };
 
         // إنشاء map للمنتجات للوصول السريع
-        const productsMap = new Map(
-          (productsData || []).map(p => [p.id, p])
-        );
+        const productsMap = new Map((productsData || []).map((p) => [p.id, p]));
 
         // بناء عناصر السلة باستخدام البيانات المجمعة
         const cartItems: CartItem[] = (items || []).map((item) => {
@@ -104,35 +107,40 @@ export const useIsolatedStoreCart = (storeId: string, storeSlug?: string) => {
           return {
             id: item.id,
             product_id: item.product_id,
-            product_title: productData?.title || 'منتج',
+            product_title: productData?.title || "منتج",
             quantity: item.quantity,
             unit_price_sar: item.unit_price_sar,
-            total_price_sar: item.total_price_sar ?? (item.quantity * item.unit_price_sar),
+            total_price_sar:
+              item.total_price_sar ?? item.quantity * item.unit_price_sar,
             product_image_url: productData?.image_urls?.[0],
-            selected_variants: (item.selected_variants as Record<string, string>) || {}
+            selected_variants:
+              (item.selected_variants as Record<string, string>) || {},
           };
         });
 
-        const total = cartItems.reduce((sum, item) => sum + (item.total_price_sar ?? 0), 0);
+        const total = cartItems.reduce(
+          (sum, item) => sum + (item.total_price_sar ?? 0),
+          0,
+        );
 
         setCart({
           id: cartData.id,
           items: cartItems,
-          total
+          total,
         });
 
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
           try {
-            localStorage.setItem('storefront:last-store-id', storeId);
-            localStorage.setItem('storefront:last-cart-id', cartData.id);
+            localStorage.setItem("storefront:last-store-id", storeId);
+            localStorage.setItem("storefront:last-cart-id", cartData.id);
           } catch (error) {
-            console.warn('Unable to persist storefront cart context', error);
+            console.warn("Unable to persist storefront cart context", error);
           }
         }
       }
     } catch (error) {
-      console.error('Error loading cart:', error);
-      toast.error('خطأ في تحميل السلة');
+      console.error("Error loading cart:", error);
+      toast.error("خطأ في تحميل السلة");
     } finally {
       setLoading(false);
     }
@@ -143,25 +151,25 @@ export const useIsolatedStoreCart = (storeId: string, storeSlug?: string) => {
     quantity: number = 1,
     unitPrice?: number,
     productTitle?: string,
-    selectedVariants?: Record<string, string>
+    selectedVariants?: Record<string, string>,
   ) => {
     try {
       if (!cart) return;
 
       // استخدام السعر الممرر أو محاولة الحصول عليه من قاعدة البيانات
       let finalPrice = unitPrice;
-      let finalTitle = productTitle || 'منتج';
+      let finalTitle = productTitle || "منتج";
       void finalTitle; // Used below in database insert
 
       if (!finalPrice) {
         const { data: product } = await supabasePublic
-          .from('products')
-          .select('title, price_sar')
-          .eq('id', productId)
+          .from("products")
+          .select("title, price_sar")
+          .eq("id", productId)
           .single();
 
         if (!product) {
-          toast.error('المنتج غير موجود');
+          toast.error("المنتج غير موجود");
           return;
         }
 
@@ -170,38 +178,38 @@ export const useIsolatedStoreCart = (storeId: string, storeSlug?: string) => {
       }
 
       // Check if product already in cart
-      const existingItem = cart.items.find(item => item.product_id === productId);
+      const existingItem = cart.items.find(
+        (item) => item.product_id === productId,
+      );
 
       if (existingItem) {
         // Update quantity
         const { error } = await supabasePublic
-          .from('cart_items')
+          .from("cart_items")
           .update({
             quantity: existingItem.quantity + quantity,
             unit_price_sar: finalPrice,
-            selected_variants: selectedVariants || {}
+            selected_variants: selectedVariants || {},
           })
-          .eq('id', existingItem.id);
+          .eq("id", existingItem.id);
 
         if (error) throw error;
       } else {
         // Add new item
-        const { error } = await supabasePublic
-          .from('cart_items')
-          .insert({
-            cart_id: cart.id,
-            product_id: productId,
-            quantity,
-            unit_price_sar: finalPrice,
-            selected_variants: selectedVariants || {}
-          });
+        const { error } = await supabasePublic.from("cart_items").insert({
+          cart_id: cart.id,
+          product_id: productId,
+          quantity,
+          unit_price_sar: finalPrice,
+          selected_variants: selectedVariants || {},
+        });
 
         if (error) throw error;
       }
 
       await loadCart(); // Reload cart
     } catch (error) {
-      console.error('Error adding to cart:', error);
+      console.error("Error adding to cart:", error);
       throw error; // رمي الخطأ للسماح للمكون باستخدامه
     }
   };
@@ -209,17 +217,17 @@ export const useIsolatedStoreCart = (storeId: string, storeSlug?: string) => {
   const removeFromCart = async (itemId: string) => {
     try {
       const { error } = await supabasePublic
-        .from('cart_items')
+        .from("cart_items")
         .delete()
-        .eq('id', itemId);
+        .eq("id", itemId);
 
       if (error) throw error;
 
-      toast.success('تم حذف المنتج من السلة');
+      toast.success("تم حذف المنتج من السلة");
       await loadCart();
     } catch (error) {
-      console.error('Error removing from cart:', error);
-      toast.error('خطأ في حذف المنتج');
+      console.error("Error removing from cart:", error);
+      toast.error("خطأ في حذف المنتج");
     }
   };
 
@@ -230,23 +238,23 @@ export const useIsolatedStoreCart = (storeId: string, storeSlug?: string) => {
         return;
       }
 
-      const item = cart?.items.find(i => i.id === itemId);
+      const item = cart?.items.find((i) => i.id === itemId);
       if (!item) return;
 
       const { error } = await supabasePublic
-        .from('cart_items')
+        .from("cart_items")
         .update({
           quantity: newQuantity,
-          unit_price_sar: item.unit_price_sar
+          unit_price_sar: item.unit_price_sar,
         })
-        .eq('id', itemId);
+        .eq("id", itemId);
 
       if (error) throw error;
 
       await loadCart();
     } catch (error) {
-      console.error('Error updating quantity:', error);
-      toast.error('خطأ في تحديث الكمية');
+      console.error("Error updating quantity:", error);
+      toast.error("خطأ في تحديث الكمية");
     }
   };
 
@@ -255,17 +263,17 @@ export const useIsolatedStoreCart = (storeId: string, storeSlug?: string) => {
       if (!cart) return;
 
       const { error } = await supabasePublic
-        .from('cart_items')
+        .from("cart_items")
         .delete()
-        .eq('cart_id', cart.id);
+        .eq("cart_id", cart.id);
 
       if (error) throw error;
 
-      toast.success('تم إفراغ السلة');
+      toast.success("تم إفراغ السلة");
       await loadCart();
     } catch (error) {
-      console.error('Error clearing cart:', error);
-      toast.error('خطأ في إفراغ السلة');
+      console.error("Error clearing cart:", error);
+      toast.error("خطأ في إفراغ السلة");
     }
   };
 
@@ -282,6 +290,6 @@ export const useIsolatedStoreCart = (storeId: string, storeSlug?: string) => {
     removeFromCart,
     updateQuantity,
     clearCart,
-    refetch: loadCart
+    refetch: loadCart,
   };
 };

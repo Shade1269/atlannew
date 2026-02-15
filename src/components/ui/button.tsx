@@ -7,10 +7,11 @@ import { cn } from "@/lib/utils"
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
-    variants: {
+      variants: {
       variant: {
         // Primary Button - High contrast in dark mode
         default: "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 shadow-lg hover:shadow-xl dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90 dark:shadow-primary/20",
+        primary: "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 shadow-lg hover:shadow-xl dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90 dark:shadow-primary/20",
         // Destructive/Danger Button - High contrast in dark mode
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive/80 shadow-lg dark:bg-destructive dark:text-destructive-foreground dark:hover:bg-destructive/90 dark:shadow-destructive/30",
         // Outline/Secondary Button - High contrast border in dark mode

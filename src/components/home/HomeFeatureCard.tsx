@@ -56,7 +56,7 @@ export const HomeFeatureCard = ({
         variant={buttonVariant}
         size="sm"
         onClick={onClick}
-        className="w-full mt-4 dark:bg-white dark:text-black dark:border-2 dark:border-[#D4AF37] dark:hover:bg-white/90"
+        className="w-full mt-4"
       >
         {buttonText}
       </UnifiedButton>
